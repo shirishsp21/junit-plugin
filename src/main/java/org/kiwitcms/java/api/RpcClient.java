@@ -77,7 +77,7 @@ public class RpcClient extends BaseRpcClient {
         params.put("product", productId);
         params.put("category", categoryId);
         params.put("summary", summary);
-        params.put("is_automated", "true");
+        params.put("is_automated", 1);
         params.put("priority", priorityId);
         params.put("case_status", caseStatusId);
 

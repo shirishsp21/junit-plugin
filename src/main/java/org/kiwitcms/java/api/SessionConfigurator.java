@@ -17,7 +17,6 @@ public class SessionConfigurator implements ConnectionConfigurator {
         this.token = token;
     }
 
-
     public void configure(HttpURLConnection connection){
         String cookie = "sessionid=" + token;
         connection.setRequestProperty("Cookie", cookie);

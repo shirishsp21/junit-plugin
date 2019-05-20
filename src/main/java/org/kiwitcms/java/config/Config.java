@@ -4,20 +4,11 @@
 
 package org.kiwitcms.java.config;
 
-import org.apache.commons.configuration2.Configuration;
-import org.apache.commons.configuration2.builder.fluent.Configurations;
-import org.apache.commons.configuration2.ex.ConfigurationException;
-
 import org.ini4j.Ini;
 import org.ini4j.IniPreferences;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.Optional;
-import java.util.prefs.Preferences;
 
 public class Config {
 
@@ -60,10 +51,15 @@ public class Config {
 
     public Integer getRunId() {
         String runId = System.getenv("TCMS_RUN_ID");
+        if (isDebug()) System.out.println(String.format("[DEBUG] getRunId : runId=%s", runId));
         if (runId == null) {
             return null;
         } else {
-            return Integer.getInteger(runId);
+        	String sysRunId = System.getProperty(runId);
+        	if (isDebug()) System.out.println(String.format("[DEBUG] getRunId : system property -> sysRunId=%s", sysRunId));
+            Integer retVal = Integer.getInteger(runId);
+            if (isDebug()) System.out.printf("[DEBUG] getRunId : retVal=%d", retVal);
+            return retVal;
         }
     }
 
@@ -87,5 +83,10 @@ public class Config {
                 Optional.ofNullable(System.getenv("TCMS_BUILD")).
                         orElse(Optional.ofNullable(System.getenv("TRAVIS_BUILD_NUMBER")).
                                     orElse(System.getenv("BUILD_NUMBER")));
+    }
+
+    public Boolean isDebug() {
+    	Optional<String> value = Optional.ofNullable(System.getenv("DEBUG"));
+    	return value.isPresent() ? value.get().equalsIgnoreCase("TRUE") : false;
     }
 }

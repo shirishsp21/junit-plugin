@@ -19,6 +19,7 @@ public class BaseRpcClient {
 
     public static final String BASE_URL = Config.getInstance().getUrl();
 
+    protected static final Boolean DEBUG = Config.getInstance().isDebug(); 
     protected static String sessionId;
 
     protected JSONRPC2Session prepareSession(){
@@ -47,7 +48,11 @@ public class BaseRpcClient {
 
         // Send request
         try {
-            return getResponse(mySession.send(request));
+            Object response = getResponse(mySession.send(request));
+            if (DEBUG) {
+            	System.out.println(String.format("[DEBUG] executeViaNamedParams (serviceMethod = '%s') : response -> %s", serviceMethod, response));
+            }
+            return response;
         } catch (JSONRPC2SessionException e) {
             System.err.println(e.getMessage());
             return null;
@@ -64,7 +69,11 @@ public class BaseRpcClient {
 
         // Send request
         try {
-            return getResponse(mySession.send(request));
+            Object response = getResponse(mySession.send(request));
+            if (DEBUG) {
+            	System.out.println(String.format("[DEBUG] executeViaNamedParams (serviceMethod = '%s') : response -> %s", serviceMethod, response));
+            }
+            return response;
         } catch (JSONRPC2SessionException e) {
             System.err.println(e.getMessage());
             return null;
